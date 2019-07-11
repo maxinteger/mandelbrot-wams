@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mandelbrot set</title>
+    <link rel="stylesheet" href="resources/style.css">
+</head>
+<body>
+<canvas id="id-canvas" width="1000" height="1000"></canvas>
+<section class="controls">
+    <div>
+
+        <label>
+            Workers (<span id="id-workers-current">1</span>/<span id="id-workers-max">1</span>)
+            <input id="id-workers" type="range" min="1" step="1" value="1"/>
+        </label>
+    </div>
+    <div>
+        <label>
+            Resolution:
+            <select name="resolution" id="id-resolution">
+                <option value="200x200">200x200</option>
+                <option value="500x500">500x500</option>
+                <option value="1000x1000" selected>1000x1000</option>
+                <option value="fill">Fill</option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <button id="id-reset">Reset</button>
+        <button id="id-back">⬅️</button>
+        <button id="id-forward">➡️</button>
+    </div>
+</section>
+<script type="module" src="scripts/index.js"></script>
+</body>
+</html>

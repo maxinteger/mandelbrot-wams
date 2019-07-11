@@ -1,0 +1,26 @@
+{
+  "name": "wasm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "asbuild:debug": "asc src/assembly/mandelbrot.ts -b scripts/mandelbrot-debug.wasm -t bin/mandelbrot-debug.wat --sourceMap --validate --debug",
+    "asbuild:release": "asc src/assembly/mandelbrot.ts -b scripts/mandelbrot.wasm --validate --optimize",
+    "asbuild": "npm run asbuild:release",
+    "server": "http-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "assemblyscript": "github:AssemblyScript/assemblyscript",
+    "http-server": "^0.11.1",
+    "prettier": "1.18.2"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "printWidth": 100
+  }
+}
