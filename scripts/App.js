@@ -3,7 +3,7 @@ import { PWorker } from './utils/PWorker.js'
 
 export class App {
   constructor(canvasCtx, appConfig) {
-    this.workers = range(appConfig.workers).map(() => new PWorker('./scripts/worker.js'))
+    this.workers = range(appConfig.workers).map(() => new PWorker('./scripts/render/wasm-assemblyscript-worker.js'))
     this.canvas = canvasCtx
     this.canvasImageData = canvasCtx.createImageData(appConfig.width, appConfig.height)
     canvasCtx.clearRect(0, 0, appConfig.width, appConfig.height)

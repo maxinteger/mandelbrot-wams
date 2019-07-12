@@ -41,6 +41,7 @@ const workersCurrentLabel = $('#id-workers-current')
 const workersMaxLabel = $('#id-workers-max')
 const resolutionSelector = $('#id-resolution')
 const resetBtn = $('#id-reset')
+const refreshBtn = $('#id-refresh')
 const backBtn = $('#id-back')
 const forwardBtn = $('#id-forward')
 
@@ -83,6 +84,7 @@ canvas.addEventListener('click', event => {
 })
 
 resetBtn.addEventListener('click', () => updateHistory(viewHistory.home()))
+refreshBtn.addEventListener('click', () => app.render(viewHistory.get()))
 backBtn.addEventListener('click', () => updateHistory(viewHistory.back()))
 forwardBtn.addEventListener('click', () => updateHistory(viewHistory.forward()))
 

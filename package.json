@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "asbuild:debug": "asc src/assembly/mandelbrot.ts -b scripts/mandelbrot-debug.wasm -t bin/mandelbrot-debug.wat --sourceMap --validate --debug",
-    "asbuild:release": "asc src/assembly/mandelbrot.ts -b scripts/mandelbrot.wasm --validate --optimize",
+    "asbuild:release": "asc src/assembly/mandelbrot.ts -b scripts/render/wasm-assemblyscript.wasm --validate --optimize",
     "asbuild": "npm run asbuild:release",
     "server": "http-server"
   },
