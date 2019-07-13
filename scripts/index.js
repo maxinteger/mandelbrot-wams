@@ -3,21 +3,33 @@ import { CPU_CORS } from './utils/constants.js'
 import { App } from './App.js'
 import { History } from './History.js'
 
+const canvas = $('#id-canvas')
+const workerSlider = $('#id-workers')
+const workersCurrentLabel = $('#id-workers-current')
+const workersMaxLabel = $('#id-workers-max')
+const resolutionSelector = $('#id-resolution')
+const engineSelector = $('#id-engine')
+const resetBtn = $('#id-reset')
+const refreshBtn = $('#id-refresh')
+const backBtn = $('#id-back')
+const forwardBtn = $('#id-forward')
+
 ///
 let app
 
 let appConfig = {
   workers: 1,
-  resX: 1000,
-  resY: 1000
+  width: 1000,
+  height: 1000,
+  engine: 'js'
 }
 
 const viewHistory = new History()
 
 ///
 
-export const initApp = (canvas, workers) => {
-  appConfig = Object.assign({}, appConfig, { width: canvas.width, height: canvas.height, workers })
+export const initApp = newConfig => {
+  appConfig = Object.assign({}, appConfig, newConfig)
 
   const context = canvas.getContext('2d', {
     alpha: false
@@ -35,37 +47,32 @@ export const initApp = (canvas, workers) => {
 
 ///
 
-const canvas = $('#id-canvas')
-const workerSlider = $('#id-workers')
-const workersCurrentLabel = $('#id-workers-current')
-const workersMaxLabel = $('#id-workers-max')
-const resolutionSelector = $('#id-resolution')
-const resetBtn = $('#id-reset')
-const refreshBtn = $('#id-refresh')
-const backBtn = $('#id-back')
-const forwardBtn = $('#id-forward')
-
 workerSlider.setAttribute('max', CPU_CORS.toString())
 workersMaxLabel.textContent = CPU_CORS
 
 workerSlider.addEventListener('change', event => {
   const workers = parseFloat(event.currentTarget.value)
   workersCurrentLabel.textContent = workers
-  initApp(canvas, workers)
+  initApp({ workers })
 })
 
-resolutionSelector.addEventListener('change', (event) => {
+resolutionSelector.addEventListener('change', event => {
   const value = event.currentTarget.value
   if (value !== 'fill') {
     const [w, h] = value.split('x')
     canvas.width = parseInt(w)
     canvas.height = parseInt(h)
   } else {
-    canvas.width = window.innerWidth - window.innerWidth % 2
-    canvas.height = window.innerHeight - window.innerHeight % 2
+    canvas.width = window.innerWidth - (window.innerWidth % 2)
+    canvas.height = window.innerHeight - (window.innerHeight % 2)
   }
 
-  initApp(canvas, appConfig.workers)
+  initApp({ width: canvas.width, height: canvas.height })
+})
+
+engineSelector.addEventListener('change', event => {
+  const engine = event.currentTarget.value
+  initApp({ engine })
 })
 
 canvas.addEventListener('click', event => {

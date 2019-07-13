@@ -3,7 +3,9 @@ import { PWorker } from './utils/PWorker.js'
 
 export class App {
   constructor(canvasCtx, appConfig) {
-    this.workers = range(appConfig.workers).map(() => new PWorker('./scripts/render/wasm-assemblyscript-worker.js'))
+    this.workers = range(appConfig.workers).map(
+      () => new PWorker(this.getRenderEngine(appConfig.engine))
+    )
     this.canvas = canvasCtx
     this.canvasImageData = canvasCtx.createImageData(appConfig.width, appConfig.height)
     canvasCtx.clearRect(0, 0, appConfig.width, appConfig.height)
@@ -16,7 +18,7 @@ export class App {
 
     const baseMessage = { workers, x, y, width, canvasWidth, canvasHeight }
 
-    const label = `Render Mandelbrot set with ${workers} worker(s)`
+    const label = `Render Mandelbrot set with ${this.appConfig.engine} on ${workers} worker(s)`
     console.time(label)
 
     const res = await Promise.all(
@@ -31,6 +33,21 @@ export class App {
     this.canvas.putImageData(this.canvasImageData, 0, 0)
 
     console.timeEnd(label)
+  }
+
+  getRenderEngine(name) {
+    switch (name) {
+      case 'js':
+        return './scripts/render/js-native-worker.js'
+      case 'wasm':
+        return './scripts/render/wasm-assemblyscript-worker.js'
+      case 'wasm-as':
+        return './scripts/render/wasm-assemblyscript-worker.js'
+      case 'wasm-rust':
+        return './scripts/render/wasm-assemblyscript-worker.js'
+      default:
+        throw new Error(`Invalid render engine '${name}'`)
+    }
   }
 
   terminate() {

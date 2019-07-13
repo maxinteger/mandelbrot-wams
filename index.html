@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Mandelbrot set</title>
     <link rel="stylesheet" href="resources/style.css">
 </head>
@@ -23,6 +24,16 @@
                 <option value="500x500">500x500</option>
                 <option value="1000x1000" selected>1000x1000</option>
                 <option value="fill">Fill</option>
+            </select>
+        </label>
+    </div>    <div>
+        <label>
+            Engine:
+            <select name="resolution" id="id-engine">
+                <option value="js" selected>Native JS</option>
+                <option value="wasm">Native WASM</option>
+                <option value="wasm-as">Assembly WASM</option>
+                <option value="wasm-rust">Rust WASM</option>
             </select>
         </label>
     </div>
