@@ -40,7 +40,7 @@ export class App {
       case 'js':
         return './scripts/render/js-native-worker.js'
       case 'wasm':
-        return './scripts/render/wasm-assemblyscript-worker.js'
+        return './scripts/render/wasm-native-worker.js'
       case 'wasm-as':
         return './scripts/render/wasm-assemblyscript-worker.js'
       case 'wasm-rust':

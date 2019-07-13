@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "asbuild:debug": "asc src/assembly/mandelbrot.ts -b scripts/mandelbrot-debug.wasm -t bin/mandelbrot-debug.wat --sourceMap --validate --debug",
-    "asbuild:release": "asc src/assembly/mandelbrot.ts -b scripts/render/wasm-assemblyscript.wasm --validate --optimize",
-    "asbuild": "npm run asbuild:release",
+    "asBuild:debug": "asc src/assemblyscript/mandelbrot.ts -b scripts/mandelbrot-debug.wasm -t bin/mandelbrot-debug.wat --sourceMap --validate --debug",
+    "asBuild:release": "asc src/assemblyscript/mandelbrot.ts -b scripts/render/wasm-assemblyscript.wasm --validate --optimize",
+    "asBuild": "npm run asBuild:release",
+    "wabtBuild": "node build/wat2wasm.js",
+    "build": "npm run asbuild && npm run wabtBuild",
     "server": "http-server"
   },
   "author": "",
@@ -15,7 +17,8 @@
   "devDependencies": {
     "assemblyscript": "github:AssemblyScript/assemblyscript",
     "http-server": "^0.11.1",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "wabt": "^1.0.11"
   },
   "prettier": {
     "semi": false,
