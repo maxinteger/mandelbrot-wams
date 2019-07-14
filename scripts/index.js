@@ -1,4 +1,4 @@
-import { $ } from './utils/utils.js'
+import { $, downloadCanvasAsPng } from './utils/utils.js'
 import { CPU_CORS } from './utils/constants.js'
 import { App } from './App.js'
 import { History } from './History.js'
@@ -13,6 +13,7 @@ const resetBtn = $('#id-reset')
 const refreshBtn = $('#id-refresh')
 const backBtn = $('#id-back')
 const forwardBtn = $('#id-forward')
+const downloadBtn = $('#id-download')
 
 ///
 let app
@@ -94,6 +95,11 @@ resetBtn.addEventListener('click', () => updateHistory(viewHistory.home()))
 refreshBtn.addEventListener('click', () => app.render(viewHistory.get()))
 backBtn.addEventListener('click', () => updateHistory(viewHistory.back()))
 forwardBtn.addEventListener('click', () => updateHistory(viewHistory.forward()))
+downloadBtn.addEventListener('click', () => {
+  const view = viewHistory.get()
+
+  downloadCanvasAsPng(canvas, `mandelbrot-x${view.x}-y${view.y}-w${view.width}-z${view.zoom}.png`)
+})
 
 const updateHistory = data => {
   if (app) {
