@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "*.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/src/**",
+      "**/build/**",
+      "**/bin/**"
+    ]
+  }
+}

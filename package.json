@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:watb": "node build/wat2wasm.js",
-    "build:as:release": "asc src/assemblyscript/mandelbrot.ts -b scripts/render/wasm-assemblyscript.wasm --validate --optimize",
-    "build:as:debug": "asc src/assemblyscript/mandelbrot.ts -b scripts/render/wasm-assemblyscript.wasm --sourceMap --validate --debug",
-    "build:rust:release": "wasm-pack build --target web -d ../../bin/wasm-rust ./src/rust && mv ./bin/wasm-rust/rust_bg.wasm ./scripts/render/wasm-rust.wasm",
-    "build:rust:debug": "wasm-pack build --target web --debug -d ../../bin/wasm-rust ./src/rust && mv ./bin/wasm-rust/rust_bg.wasm ./scripts/render/wasm-rust.wasm && mv ./bin/wasm-rust/rust_bg.d.ts ./scripts/render/wasm-rust.d.ts",
+    "build:as:release": "asc src/assemblyscript/mandelbrot.ts -b public/scripts/render/wasm-assemblyscript.wasm --validate --optimize",
+    "build:as:debug": "asc src/assemblyscript/mandelbrot.ts -b public/scripts/render/wasm-assemblyscript.wasm --sourceMap --validate --debug",
+    "build:rust:release": "wasm-pack build --target web -d ../../bin/wasm-rust ./src/rust && mv ./bin/wasm-rust/rust_bg.wasm public/scripts/render/wasm-rust.wasm",
+    "build:rust:debug": "wasm-pack build --target web --debug -d ../../bin/wasm-rust ./src/rust && mv ./bin/wasm-rust/rust_bg.wasm ./public/scripts/render/wasm-rust.wasm && mv ./bin/wasm-rust/rust_bg.d.ts ./public/scripts/render/wasm-rust.d.ts",
     "build": "npm run build:as:release && npm run build:watb && npm run build:rust:release",
     "build:debug": "npm run build:as:debug && npm run build:watb && npm run build:rust:debug",
     "server": "http-server"
