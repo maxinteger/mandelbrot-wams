@@ -1,7 +1,7 @@
 # Mandelbrot set with WASM
 
 Experimental project to test WASM and WebWorkers
-[https://mandelbrot-wasm.firebaseapp.com/](https://mandelbrot-wasm.firebaseapp.com/)
+[https://mandelbrot-wasm.web.app/](https://mandelbrot-wasm.web.app/)
 
 ## Install
 
