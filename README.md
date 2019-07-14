@@ -12,6 +12,7 @@ For rust, make sure you installed [Rust lang](https://www.rust-lang.org/), then 
 
 ```bash
     cargo install wasm-pack
+    cargo install wasm-snip
 ``` 
 
 ## Run locally
@@ -58,14 +59,25 @@ AssemblyScript is a TypeScript like language what we can compile to WASM
 Rust is a modern system language (like C, C++). With **wasm-pack** we can compile rust code to WASM
 
 - [wasm-pack site](https://rustwasm.github.io/wasm-pack/)
+- [Rust and WebAssembly book](https://rustwasm.github.io/docs/book/)
+- [wasm-snip - wasm optimiser](https://github.com/rustwasm/wasm-snip)
 
 # Limitations / bugs
 
 - The app works only in chromium based browsers right now
 - some resolutions + number of workers combinations render distorted image
 
-# More links
+# Other
+
+## More link
 
 - [Rust lang site](https://www.rust-lang.org/)
 - [WASM by examples](https://wasmbyexample.dev/)
 - [Webassembly Studio](https://webassembly.studio)
+
+## Takeaways:
+
+- WASM average execution time is a little slower then native JS (with the current implementation of WASM + Mandelbrot is very specific problem the engine can optimise JS very well)
+- Naive hand written WASM can not beat the compiled and optimized code
+- WASM *not* start new thread, you have to run it in webWorker for that.
+ 

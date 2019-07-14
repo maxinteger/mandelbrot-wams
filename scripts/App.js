@@ -44,7 +44,7 @@ export class App {
       case 'wasm-as':
         return './scripts/render/wasm-assemblyscript-worker.js'
       case 'wasm-rust':
-        return './scripts/render/wasm-assemblyscript-worker.js'
+        return './scripts/render/wasm-rust-worker.js'
       default:
         throw new Error(`Invalid render engine '${name}'`)
     }
