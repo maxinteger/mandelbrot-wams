@@ -1,7 +1,7 @@
  body {
     margin: 0;
     padding: 0;
-    background: #222;
+    background: #000;
     display: flex;
     width: 100vw;
     height: 100vh;
@@ -9,6 +9,9 @@
 
 #id-canvas {
     margin: auto;
+    border: 1px solid #444;
+    outline: 1px solid black;
+    border-radius: 0.5rem;
 }
 
 .controls {

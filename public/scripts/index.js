@@ -20,8 +20,8 @@ let app
 
 let appConfig = {
   workers: 1,
-  width: 1000,
-  height: 1000,
+  width: 500,
+  height: 500,
   engine: 'js'
 }
 
