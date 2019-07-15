@@ -2,6 +2,11 @@
 // By growing our Wasm Memory by 1 page (64KB)
 memory.grow(256) // maximum image resolution 2048 x 2048
 
+declare namespace console {
+  @external("console", "logi")
+  export function logi(i: i32): void
+}
+
 // Define the size of our checkerboard
 const MAX_ITERATIONS = 1000
 
@@ -23,6 +28,8 @@ export function draw(
 ): void {
   const w = viewWidth / 2
   const dx = viewWidth / canvasWidth
+
+  // console.logi(42)
 
   for (let i: i32 = 0; i < canvasWidth; i++) {
     for (let j: i32 = 0; j < canvasHeight; j++) {

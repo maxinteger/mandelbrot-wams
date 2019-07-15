@@ -190,6 +190,8 @@
     (local $w f64)
     (local $dx f64)
 
+    ;; (call $logi32 (i32.const 42))
+
     (set_local $w
       (f64.div
         (get_local $viewWidth)

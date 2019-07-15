@@ -8,7 +8,7 @@ const OUTPUT_BUFFER_SIZE: usize = MAX_RES * MAX_RES * 4;
 
 #[wasm_bindgen]
 extern {
-    pub fn log(f: f64);
+    pub fn log(i: i32);
 }
 
 // Our Add function
@@ -20,6 +20,8 @@ pub fn draw(canvas_width: i32, canvas_height: i32, vertical_offset: i32, view_x:
     let mut memory: Vec<u8> = vec![0; OUTPUT_BUFFER_SIZE];
     let w = view_width / 2.0;
     let dx = view_width / canvas_width as f64;
+
+    // log(42);
 
     for i in 0..canvas_width {
         for j in 0..canvas_height {

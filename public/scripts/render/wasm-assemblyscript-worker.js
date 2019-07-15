@@ -5,7 +5,9 @@ async function init() {
   const wasmModule = await wasmBrowserInstantiate('/scripts/render/wasm-assemblyscript.wasm', {
     env: {
       abort: () => console.log('Abort!'),
-      log: a => console.log(a)
+    },
+    console: {
+      logi: a => console.log(a),
     }
   })
 
