@@ -24,8 +24,10 @@ onmessage = function(event) {
     // Create a Uint8Array to give us access to Wasm Memory
     const wasmByteMemoryArray = new Uint8Array(memory.buffer)
 
+    const segmentHeight = Math.floor(canvasHeight / workers)
+    const verticalOffset = index * segmentHeight
     // call wasm
-    exports.draw(workers, index, canvasWidth, canvasHeight, x, y, width)
+    exports.draw(canvasWidth, segmentHeight, verticalOffset, x, y, width)
 
     // Pull out the RGBA values from Wasm memory, the we wrote to in wasm,
     // starting at the checkerboard pointer (memory array index)

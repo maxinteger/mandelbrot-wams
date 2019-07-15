@@ -15,12 +15,10 @@ const promise = init()
 onmessage = function(event) {
   const { workers, canvasHeight, width, index, canvasWidth, y, x } = event.data
   promise.then(exports => {
-    // Get our memory object from the exports
-
-    // Create a Uint8Array to give us access to Wasm Memory
-
+    const segmentHeight = Math.floor(canvasHeight / workers)
+    const verticalOffset = index * segmentHeight
     // call wasm
-    const bufferPtr = exports.draw(workers, index, canvasWidth, canvasHeight, x, y, width)
+    const bufferPtr = exports.draw(canvasWidth, segmentHeight, verticalOffset, x, y, width)
 
     const memory = exports.memory
     const wasmByteMemoryArray = new Uint8Array(memory.buffer)
@@ -29,7 +27,7 @@ onmessage = function(event) {
     // starting at the checkerboard pointer (memory array index)
     const imageDataArray = wasmByteMemoryArray.slice(
       bufferPtr,
-      bufferPtr + (canvasWidth * canvasHeight * 4) / workers
+      bufferPtr + canvasWidth * segmentHeight * 4
     )
 
     postMessage({ index, buffer: imageDataArray }, [imageDataArray.buffer])

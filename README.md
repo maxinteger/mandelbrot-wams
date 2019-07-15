@@ -66,7 +66,6 @@ Rust is a modern system language (like C, C++). With **wasm-pack** we can compil
 # Limitations / bugs
 
 - The app works only in chromium based browsers right now
-- some resolutions + number of workers combinations render distorted image
 
 # Other
 

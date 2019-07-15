@@ -4,35 +4,34 @@ onmessage = function(event) {
   const { workers, canvasHeight, width, index, canvasWidth, y, x } = event.data
 
   // Create a Uint8Array to give us access to Wasm Memory
-  const imageDataArray = draw(workers, index, canvasWidth, canvasHeight, x, y, width)
+  const segmentHeight = Math.floor(canvasHeight / workers)
+  const verticalOffset = index * segmentHeight
+
+  const imageDataArray = draw(canvasWidth, segmentHeight, verticalOffset, x, y, width)
 
   postMessage({ index, buffer: imageDataArray }, [imageDataArray.buffer])
 }
 
 ///
-const draw = (workers, segment, canvasWidth, canvasHeight, x0, y0, width) => {
-  const segmentHeight = canvasHeight / workers
-  const offset = segment * segmentHeight
-  const w = width / 2
-  const dx = width / canvasWidth
 
-  const arr = new Uint8Array(Math.floor(canvasWidth * segmentHeight * 4))
-
-  //  const memoryPage = Math.ceil(canvasW * segmentHeight * 4 / 1024 / 64) as i32
+const draw = (canvasWidth, canvasHeight, verticalOffset, viewX, viewY, viewWidth) => {
+  const w = viewWidth / 2
+  const dx = viewWidth / canvasWidth
+  const arr = new Uint8Array(Math.floor(canvasWidth * canvasHeight * 4))
 
   for (let i = 0; i < canvasWidth; i++) {
-    for (let j = 0; j < segmentHeight; j++) {
+    for (let j = 0; j < canvasHeight; j++) {
       // complex number c
-      const cx = x0 - w + i * dx
-      const ci = y0 + w - (j + offset) * dx
+      const cx = viewX - w + i * dx
+      const ci = viewY + w - (j + verticalOffset) * dx
 
       // return number of iterations
-      let n = boundedness(cx, ci)
+      const n = boundedness(cx, ci)
 
       // fill color
-      let r = n % 255
-      let g = n % 255
-      let b = n % 255
+      const r = n % 255
+      const g = n % 255
+      const b = n % 255
 
       const pos = j * canvasWidth + i
       const RGBIndex = pos * 4
@@ -47,18 +46,18 @@ const draw = (workers, segment, canvasWidth, canvasHeight, x0, y0, width) => {
 
 function boundedness(cx, ci) {
   // 0 + 0i
-  let x = 0
-  let y = 0
+  let ax = 0
+  let ai = 0
   let i = 0
 
   for (; i < MAX_ITERATIONS; i++) {
-    let xx = x
+    let axx = ax
     // fc(z) = z^2 + c
-    x = x * x - y * y + cx
-    y = 2 * xx * y + ci
+    ax = ax * ax - ai * ai + cx
+    ai = 2 * axx * ai + ci
 
     // if |z| > 2, f(z) -> ∞, return # of iterations
-    if (x * x + y * y > 4) {
+    if (ax * ax + ai * ai > 4) {
       return i
     }
   }

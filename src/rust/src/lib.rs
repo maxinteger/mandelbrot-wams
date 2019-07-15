@@ -1,5 +1,5 @@
 extern crate wasm_bindgen;
-// Add the wasm-pack crate
+
 use wasm_bindgen::prelude::*;
 
 const MAX_RES: usize = 2048;
@@ -16,17 +16,15 @@ extern {
 // return a pointer to our buffer
 // to include #[wasm_bindgen]
 #[wasm_bindgen]
-pub fn draw(workers: i32, segment: i32, canvas_w: i32, canvas_h: i32, x0: f64, y0: f64, width: f64) -> *const u8{
+pub fn draw(canvas_width: i32, canvas_height: i32, vertical_offset: i32, view_x: f64, view_y: f64, view_width: f64) -> *const u8 {
     let mut memory: Vec<u8> = vec![0; OUTPUT_BUFFER_SIZE];
-    let segment_height: i32 = canvas_h / workers;
-    let offset: i32 = segment * segment_height;
-    let w: f64 = width / 2.0;
-    let dx: f64 = width / canvas_w as f64;
+    let w = view_width / 2.0;
+    let dx = view_width / canvas_width as f64;
 
-    for i in 0..canvas_w {
-        for j in 0..segment_height {
-            let cx: f64 = x0 - w + (i as f64) * dx;
-            let ci: f64 = y0 + w - (j + offset) as f64 * dx;
+    for i in 0..canvas_width {
+        for j in 0..canvas_height {
+            let cx = view_x - w + (i as f64) * dx;
+            let ci = view_y + w - (j + vertical_offset) as f64 * dx;
 
             let n = boundedness(cx, ci);
 
@@ -34,27 +32,27 @@ pub fn draw(workers: i32, segment: i32, canvas_w: i32, canvas_h: i32, x0: f64, y
             let g = (n % 255) as u8;
             let b = (n % 255) as u8;
 
-            store_pixel(&mut memory, canvas_w, i, j, r, g, b);
+            store_pixel(&mut memory, canvas_width, i, j, r, g, b);
         }
     }
 
-    return memory.as_ptr()
+    return memory.as_ptr();
 }
 
 fn boundedness(cx: f64, ci: f64) -> i32 {
     // 0 + 0i
-    let mut x: f64 = 0.0;
-    let mut y: f64 = 0.0;
-    let mut i: i32 = 0;
+    let mut ax = 0.0_f64;
+    let mut ai = 0.0_f64;
+    let mut i = 0;
 
     while i < MAX_ITERATIONS {
-        let xx = x;
+        let axx = ax;
         // fc(z) = z^2 + c
-        x = x * x - y * y + cx;
-        y = 2.0 * xx * y + ci;
+        ax = ax * ax - ai * ai + cx;
+        ai = 2.0 * axx * ai + ci;
 
         // if |z| > 2, f(z) -> ∞, return # of iterations
-        if x * x + y * y > 4.0 {
+        if ax * ax + ai * ai > 4.0 {
             return i;
         }
         i += 1;

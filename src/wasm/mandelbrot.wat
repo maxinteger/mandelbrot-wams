@@ -12,7 +12,7 @@
   )
 
   (func $storePixel
-    (param $canvasW i32)
+    (param $canvasWidth i32)
     (param $x i32)
     (param $y i32)
     (param $r i32)
@@ -26,7 +26,7 @@
           (get_local $x)
           (i32.mul
             (get_local $y)
-            (get_local $canvasW)
+            (get_local $canvasWidth)
           )
         )
         (i32.const 4)
@@ -44,45 +44,45 @@
     (param $ci f64)
     (result i32)
 
-    (local $x f64)
-    (local $xx f64)
-    (local $y f64)
+    (local $ax f64)
+    (local $axx f64)
+    (local $ai f64)
     (local $check f64)
     (local $i i32)
     (local $MAX_ITER i32)
 
-    (set_local $x (f64.const 0))
-    (set_local $y (f64.const 0))
+    (set_local $ax (f64.const 0))
+    (set_local $ai (f64.const 0))
     (set_local $i (i32.const 0))
     (set_local $MAX_ITER (i32.const 1000))
 
     (block
       (loop
-        (set_local $xx (get_local $x))
-        (set_local $x
+        (set_local $axx (get_local $ax))
+        (set_local $ax
           (f64.add
             (f64.sub
               (f64.mul
-                (get_local $x)
-                (get_local $x)
+                (get_local $ax)
+                (get_local $ax)
               )
               (f64.mul
-                (get_local $y)
-                (get_local $y)
+                (get_local $ai)
+                (get_local $ai)
               )
             )
             (get_local $cx)
           )
         )
 
-        (set_local $y
+        (set_local $ai
           (f64.add
             (f64.mul
               (f64.mul
                 (f64.const 2)
-                (get_local $xx)
+                (get_local $axx)
               )
-              (get_local $y)
+              (get_local $ai)
             )
             (get_local $ci)
           )
@@ -91,12 +91,12 @@
         (set_local $check
           (f64.add
             (f64.mul
-              (get_local $x)
-              (get_local $x)
+              (get_local $ax)
+              (get_local $ax)
             )
             (f64.mul
-              (get_local $y)
-              (get_local $y)
+              (get_local $ai)
+              (get_local $ai)
             )
           )
         )
@@ -113,14 +113,14 @@
 
 
   (func $calcPixel
-    (param $x0 f64)
-    (param $y0 f64)
+    (param $viewX f64)
+    (param $viewY f64)
     (param $i i32)
     (param $j i32)
     (param $w f64)
     (param $dx f64)
     (param $offset i32)
-    (param $canvasW i32)
+    (param $canvasWidth i32)
 
     (local $cx f64)
     (local $ci f64)
@@ -130,7 +130,7 @@
     (set_local $cx
       (f64.add
         (f64.sub
-          (get_local $x0)
+          (get_local $viewX)
           (get_local $w)
         )
         (f64.mul
@@ -144,7 +144,7 @@
     (set_local $ci
       (f64.sub
         (f64.add
-          (get_local $y0)
+          (get_local $viewY)
           (get_local $w)
         )
         (f64.mul
@@ -167,7 +167,7 @@
     )
 
     (call $storePixel
-      (get_local $canvasW)
+      (get_local $canvasWidth)
       (get_local $i)
       (get_local $j)
       (i32.rem_u (get_local $n) (i32.const 255))
@@ -178,49 +178,29 @@
 
 
   (func $draw
-    (param $workers i32)
-    (param $segment i32)
-    (param $canvasW i32)
-    (param $canvasH i32)
-    (param $x0 f64)
-    (param $y0 f64)
-    (param $width f64)
+    (param $canvasWidth i32)
+    (param $canvasHeight i32)
+    (param $verticalOffset i32)
+    (param $viewX f64)
+    (param $viewY f64)
+    (param $viewWidth f64)
 
     (local $i i32)
     (local $j i32)
-    (local $segmentHeight i32)
-    (local $offset i32)
     (local $w f64)
     (local $dx f64)
 
-    (set_local $segmentHeight
-      (i32.div_u
-        (get_local $canvasH)
-        (get_local $workers)
-      )
-    )
-
-
-    (set_local $offset
-      (i32.mul
-        (get_local $segment)
-        (get_local $segmentHeight)
-      )
-    )
-
-
     (set_local $w
       (f64.div
-        (get_local $width)
+        (get_local $viewWidth)
         (f64.const 2)
       )
     )
 
-
     (set_local $dx
       (f64.div
-        (get_local $width)
-        (f64.convert_u/i32 (get_local $canvasW))
+        (get_local $viewWidth)
+        (f64.convert_u/i32 (get_local $canvasWidth))
       )
     )
 
@@ -235,24 +215,24 @@
           (loop
 
            (call $calcPixel
-              (get_local $x0)
-              (get_local $y0)
+              (get_local $viewX)
+              (get_local $viewY)
               (get_local $i)
               (get_local $j)
               (get_local $w)
               (get_local $dx)
-              (get_local $offset)
-              (get_local $canvasW)
+              (get_local $verticalOffset)
+              (get_local $canvasWidth)
             )
 
             (set_local $j (call $increment (get_local $j)))
-            (br_if 1 (i32.eq (get_local $j) (get_local $segmentHeight)))
+            (br_if 1 (i32.eq (get_local $j) (get_local $canvasHeight)))
             (br 0)
           )
         )
 
         (set_local $i (call $increment (get_local $i)))
-        (br_if 1 (i32.eq (get_local $i) (get_local $canvasW)))
+        (br_if 1 (i32.eq (get_local $i) (get_local $canvasWidth)))
         (br 0)
       )
     )
